@@ -1,5 +1,11 @@
 #!/bin/bash
 
+export DOCKER_HASH_ID=$( kubectl get pod "$HOSTNAME" -n "$NS" -o jsonpath='{..imageID}' | sed 's/docker\-pullable\:\/\///g' )
+if [[ -z $DOCKER_HASH_ID ]]; then
+  echo "DOCKER_HASH_ID IS EMPTY;EXITING";
+  exit 1;
+fi
+echo "DOCKER_HASH_ID ; $DOCKER_HASH_ID"
 
 ## Run authentication demo service
 if [ "$is_glowroot_env" = "present" ]; then
